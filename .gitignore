@@ -1,0 +1,8 @@
+.DS_Store
+.openai/
+.env
+.env.*
+*.log
+node_modules/
+dist/assets/*soundtrack*
+dist/assets/*interstellar*
