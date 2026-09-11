@@ -1,0 +1,6 @@
+NeuroMechFly v2 geometry by NeLy / EPFL.
+Wang-Chen et al. (2024), Nature Methods: https://doi.org/10.1038/s41592-024-02497-y
+Source: https://github.com/NeLy-EPFL/fly-svg-maker/tree/main/assets
+The original meshes and rig/pose metadata are distributed under Apache-2.0.
+VORTEX modifications: posed and converted in Blender; display materials, bristles and veins; reduced geometry; separate transparent wing surfaces; side-silhouette mask and WebGL packed export.
+This is an anatomical display asset. Eon’s neural emulation and behavior controllers are not included.
