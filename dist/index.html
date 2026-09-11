@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#050709">
+  <meta name="description" content="Explore the shape of flow: an interactive 3D vortex and a wind tunnel for comparing silhouettes.">
+  <title>VORTEX — Anatomy of Flow</title>
+  <link rel="stylesheet" href="styles.css?v=en-16">
+  <link rel="stylesheet" href="aero.css?v=en-16">
+  <script src="cosmos.js?v=en-16" defer></script>
+  <script src="vortex.js?v=en-16" defer></script>
+  <script src="interface.js?v=en-16" defer></script>
+  <script src="aero.js?v=en-16" defer></script>
+  <script src="soundtrack.js?v=en-16" defer></script>
+  <link rel="stylesheet" href="explorer.css?v=en-16">
+  <link rel="stylesheet" href="live-scene.css?v=en-16">
+</head>
+<body class="model-main">
+<audio data-soundtrack loop preload="auto"></audio>
+<div id="vortex-app">
+  <header class="masthead">
+    <a class="brand" href="./" aria-label="VORTEX home">VORTEX</a>
+    <nav aria-label="Main navigation">
+      <button class="nav-link scene-tab" type="button" data-scene="vortex" aria-pressed="true">Vortex</button>
+      <button class="nav-link scene-tab" type="button" data-scene="aero" aria-pressed="false">Wind tunnel</button>
+      <button class="nav-link" type="button" data-panel="film" aria-controls="film-dialog" aria-expanded="false">Films <span aria-hidden="true">↗</span></button>
+      <button class="nav-link" type="button" data-panel="about" aria-controls="about-panel" aria-expanded="false">About</button>
+      <button class="nav-link settings" type="button" data-panel="controls" aria-controls="controls-panel" aria-expanded="false">Parameters</button>
+      <button class="nav-link credits-link" type="button" data-panel="credits" aria-controls="credits-panel" aria-expanded="false">Credits <span aria-hidden="true">↗</span></button>
+      <a class="github-link" aria-label="Star VORTEX on GitHub" data-github-link href="https://github.com/nurtileuss/vortex-flow-explorer" target="_blank" rel="noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .8a11.2 11.2 0 0 0-3.54 21.82c.56.1.77-.24.77-.54v-2.1c-3.13.68-3.79-1.33-3.79-1.33-.5-1.3-1.24-1.65-1.24-1.65-1.02-.7.08-.69.08-.69 1.13.08 1.73 1.16 1.73 1.16 1 1.72 2.63 1.22 3.27.93.1-.73.39-1.22.71-1.5-2.5-.29-5.13-1.25-5.13-5.54 0-1.22.44-2.23 1.15-3.02-.11-.28-.5-1.43.11-2.98 0 0 .94-.3 3.08 1.15A10.72 10.72 0 0 1 12 6.13c.95 0 1.9.13 2.8.38 2.14-1.45 3.08-1.15 3.08-1.15.61 1.55.22 2.7.11 2.98.72.79 1.15 1.8 1.15 3.02 0 4.3-2.64 5.25-5.15 5.53.4.35.76 1.03.76 2.08v3.11c0 .3.2.65.78.54A11.2 11.2 0 0 0 12 .8Z"/></svg><span>Star on GitHub</span><span class="github-star" aria-hidden="true">☆</span></a>
+    </nav>
+  </header>
+  <main class="observatory">
+    <section class="scene-intro" aria-label="Anatomy of flow">
+      <h1>Anatomy of flow.</h1>
+      <p data-scene-subtitle>A visual study of fluid motion</p>
+      <a class="explore-link" href="#explore" data-enter-explorer>Explore in 3D <span aria-hidden="true">↗</span></a>
+      <button type="button" class="back-to-film" data-exit-explorer hidden>← Back to animation</button>
+    </section>
+    <div class="ns-stage"><span class="explorer-badge" hidden>FLOW EXPLORER <i>3D</i></span>
+      <canvas aria-label="Interactive 3D vortex. Drag to rotate; scroll or use the buttons to zoom.">A vortex spirals inward and stretches along its axis.</canvas>
+      <img class="scene-fallback" src="assets/vortex-formation-poster.jpg" alt="Spiral paths in a three-dimensional vortex" hidden>
+      <div class="ns-label ns-axial">AXIAL STRETCHING <span>↑</span></div>
+      <div class="ns-label ns-inward">INWARD SPIRAL <span>→</span></div>
+      <div class="scene-coordinate" aria-hidden="true">Y <span>│</span> X ─ Z</div>
+      <div class="camera-controls"><button type="button" data-action="zoom-in" aria-label="Zoom in">＋</button><button type="button" data-action="zoom-out" aria-label="Zoom out">−</button><button type="button" data-action="reset-camera" aria-label="Reset camera">↺</button></div>
+      <p class="scene-hint">Drag to rotate · Scroll to zoom</p>
+    </div>
+
+    <section class="transport model-transport" aria-label="Vortex assembly animation">
+      <div class="playback"><button type="button" class="play-button" data-action="formation" aria-pressed="false"><span aria-hidden="true">▶</span> Play assembly</button><button type="button" class="sound-button" data-sound-toggle aria-pressed="false" disabled>Sound</button></div>
+      <div class="timeline"><label class="sr-only" for="formation-time">Assembly timeline</label><input id="formation-time" type="range" min="0" max="30" step="0.05" value="0"><div class="timeline-meta"><span data-formation-stage>Full structure</span><span><output data-time>00:00</output><span class="muted"> / 00:30</span></span></div></div>
+      <button class="replay-button" type="button" data-action="replay" aria-label="Replay assembly">↺</button>
+    </section>
+  </main>
+  <section class="aero-lab" id="aerotube" aria-labelledby="aero-title" hidden>
+    <div class="aero-heading"><p class="aero-eyebrow">WIND TUNNEL / 02</p><h1 id="aero-title">A tiny fly. <br>A bigger view.</h1><p data-aero-caption>A fruit fly, magnified.</p></div>
+    <div class="aero-objects" role="group" aria-label="Choose an object"><button type="button" data-object="fly" aria-pressed="true">01 <span>Fruit fly</span></button><button type="button" data-object="car" aria-pressed="false">02 <span>Formula 1</span></button><button type="button" data-object="plane" aria-pressed="false">03 <span>Aircraft</span></button></div>
+    <div class="aero-stage"><canvas id="aero-canvas" aria-label="3D object with a 2D flow field around its side silhouette. Drag to change the view."></canvas><div class="aero-loading" role="status">Preparing the wind tunnel…</div><div class="aero-direction" aria-hidden="true">FLOW <span>→</span></div><div class="aero-field-label" aria-hidden="true">WAKE</div><div class="aero-result"><span>Wake slowdown</span><output data-aero-deficit>—</output><span>At a fixed section downstream</span></div><div class="aero-view-controls"><button type="button" data-aero-view="side" aria-pressed="false">Side view</button><button type="button" data-aero-view="volume" aria-pressed="true">3D view</button></div></div>
+    <div class="aero-dashboard">
+      <div class="aero-playback"><button type="button" data-aero-play aria-pressed="true">Ⅱ Pause</button><button type="button" class="sound-button" data-sound-toggle aria-pressed="false" disabled>Sound</button><button type="button" data-aero-reset aria-label="Restart flow">↺</button></div>
+      <label class="aero-speed" for="aero-speed">Inlet speed <output id="aero-speed-value">1.0×</output><input id="aero-speed" type="range" min="0.65" max="1.4" value="1" step="0.05"></label>
+      <div class="aero-modes" role="group" aria-label="Flow display"><button type="button" data-aero-mode="trails" aria-pressed="true">Trails</button><button type="button" data-aero-mode="speed" aria-pressed="false">Speed</button><button type="button" data-aero-mode="vorticity" aria-pressed="false">Vorticity</button></div>
+      <div class="aero-scale"><div></div><p><span data-aero-low>Slower</span><span data-aero-high>Faster</span></p></div>
+    </div>
+    <div class="aero-foot"><span data-aero-state>2D flow around a side silhouette</span><button type="button" data-aero-info>Read the flow <span>↗</span></button></div>
+  </section>
+  <footer><span>Burgers vortex</span><span class="ns-status" aria-live="polite">Steady flow model</span><span>320 paths</span></footer>
+
+  <aside class="side-panel" data-side-panel="controls" id="controls-panel" aria-label="Vortex parameters" hidden>
+    <div class="side-panel-top"><span>FLOW EXPLORER / PARAMETERS</span><button type="button" data-close-panel aria-label="Close parameters">×</button></div>
+    <div class="side-panel-content controls-content">
+      <p class="eyebrow">START EXPLORING</p><h2>Make the flow your own.</h2>
+      <p class="panel-lead">Choose a preset, then change one parameter at a time. Drag the model to see what changes.</p>
+      <div class="control-panel">
+        <div class="panel-heading">Flow parameters</div>
+        <div class="preset-list" role="group" aria-label="Choose a starting point">
+          <button type="button" class="preset active" data-preset="balance" aria-pressed="true"><span>01</span> Balanced <i aria-hidden="true">↗</i></button>
+          <button type="button" class="preset" data-preset="wide" aria-pressed="false"><span>02</span> Wider core <i aria-hidden="true">↗</i></button>
+          <button type="button" class="preset" data-preset="stretch" aria-pressed="false"><span>03</span> Stronger stretch <i aria-hidden="true">↗</i></button>
+        </div>
+        <p class="control-note">1.00× is the default model. Changes update the steady flow.</p>
+        <div class="parameter"><label for="spin">Swirl <span>Γ</span> <output data-value="spin">1.00×</output></label><p id="spin-help" class="parameter-help">How strongly the flow turns around the axis.</p><input id="spin" data-control="spin" type="range" min="0.2" max="1.8" step="0.05" value="1" aria-describedby="spin-help"><div class="range-ends"><span>GENTLER</span><span>STRONGER</span></div></div>
+        <div class="parameter"><label for="stretch">Stretch <span>a</span> <output data-value="stretch">1.00×</output></label><p id="stretch-help" class="parameter-help">Pulls flow inward and stretches it along the axis.</p><input id="stretch" data-control="stretch" type="range" min="0.45" max="2" step="0.05" value="1" aria-describedby="stretch-help"><div class="range-ends"><span>WEAKER</span><span>STRONGER</span></div></div>
+        <div class="parameter"><label for="viscosity">Viscosity <span>ν</span> <output data-value="viscosity">1.00×</output></label><p id="viscosity-help" class="parameter-help">Higher viscosity spreads rotation into a wider core.</p><input id="viscosity" data-control="viscosity" type="range" min="0.35" max="2.5" step="0.05" value="1" aria-describedby="viscosity-help"><div class="range-ends"><span>LOWER</span><span>HIGHER</span></div></div>
+        <div class="view-control"><label for="view">View</label><select id="view" data-control="view"><option value="angle">3D view</option><option value="front">Side</option><option value="top">Along the axis</option></select></div>
+        <div class="legend"><span class="legend-title">RELATIVE ANGULAR SPEED</span><div class="color-ramp"></div><div class="range-ends"><span>SLOWER</span><span>FASTER</span></div></div>
+        <div class="light-control"><button type="button" class="motion-button" data-action="motion" aria-pressed="false" title="Toggle light pulses along the paths">Light pulses</button><button type="button" class="reset-parameters" data-reset-parameters>Reset parameters</button></div>
+      </div>
+      <button class="panel-text-link" data-panel="about" type="button">How this model works <span>↗</span></button>
+    </div>
+  </aside>
+  <aside class="side-panel" data-side-panel="about" id="about-panel" aria-label="About the model" hidden>
+    <div class="side-panel-top"><span>UNDERSTAND THE FLOW</span><button type="button" data-close-panel aria-label="Close model information">×</button></div>
+    <div class="side-panel-content">
+      <article data-about-vortex><p class="eyebrow">THE BURGERS VORTEX</p><h2>A swirl.<br>With a structure.</h2>
+        <p>Imagine a drop of dye in moving water. It spirals toward a central axis, then stretches upward or downward. The strands make those paths visible.</p>
+        <h3>What you are seeing</h3><p>The paths are based on a Burgers vortex: an idealized, steady flow connected to the Navier–Stokes equations. These equations relate fluid motion to pressure and viscosity.</p>
+        <div class="equation" aria-label="Incompressible Navier–Stokes momentum equation">∂u/∂t + (u · ∇)u = −∇p/ρ + ν∇²u</div>
+        <p class="scientific-note">For an incompressible fluid: ∇ · u = 0. Here u is velocity, p is pressure, ρ is density, and ν is kinematic viscosity.</p>
+        <h3>Try it yourself</h3><p>Open the Explorer. Increase swirl for tighter winding, or increase viscosity for a wider core. Rotate the model to compare the shapes.</p>
+        <a class="panel-text-link" href="#explore" data-enter-explorer>Explore in 3D <span>↗</span></a>
+        <h3>Where the art begins</h3><p class="scientific-note">Strand thickness and proportions are adjusted for clarity. The particle assembly, twisting and light pulses are artistic effects, not a simulation of a vortex forming over time. This is a visual study, not a solution to the Millennium Prize Problem.</p>
+      </article>
+      <article data-about-aero hidden><p class="eyebrow">SHAPE &amp; FLOW</p><h2 data-object-heading>A fruit fly.<br>Up close.</h2><p class="object-summary" data-object-summary></p>
+        <h3>How to explore</h3><p>Choose an object and watch the flow around it. Drag to inspect its shape. Use Side view to compare the silhouette with the calculated flow.</p>
+        <dl class="reading-key"><div><dt>Trails</dt><dd>Particles follow the calculated velocity field.</dd></div><div><dt>Speed</dt><dd>Cool to warm colors show slower to faster flow relative to the inlet.</dd></div><div><dt>Vorticity</dt><dd>Blue and orange show opposite directions of local rotation.</dd></div></dl>
+        <h3>What the number means</h3><p>Wake slowdown is the average loss of horizontal speed at a fixed section behind the object, compared with the inlet. It is a local indicator, not a drag coefficient or an aerodynamic score.</p>
+        <p class="scientific-note">The browser calculates 2D flow around a fixed side silhouette using the lattice Boltzmann method. The 3D model is for inspection. Sizes are illustrative; wing flapping, lift and downforce are not simulated.</p>
+      </article>
+      <button class="panel-text-link" data-panel="credits" type="button">Project &amp; sources <span>↗</span></button>
+      <button class="panel-text-link" data-panel="film" type="button">Watch the flow films <span>↗</span></button>
+    </div>
+  </aside>
+  <aside class="side-panel" data-side-panel="credits" id="credits-panel" aria-label="Project and sources" hidden>
+    <div class="side-panel-top"><span>VORTEX / PROJECT</span><button type="button" data-close-panel aria-label="Close project information">×</button></div>
+    <div class="side-panel-content"><article><p class="eyebrow">ABOUT THIS PROJECT</p><h2>See the shape<br>of flow.</h2>
+      <p>VORTEX is an interactive study of fluid motion. Explore a 3D vortex, adjust its parameters, and compare flow around a fruit fly, a Formula 1 car and an aircraft.</p>
+      <p>The live scenes run in WebGL. Blender was used to prepare the models and the formation film.</p>
+      <h3>Models &amp; sources</h3><p>The vortex starts from the Burgers flow model. The wind tunnel uses a 2D lattice Boltzmann solver. The fruit fly comes from NeuroMechFly (NeLy, EPFL), adapted for this scene under Apache 2.0. The car and aircraft are original procedural models.</p>
+      <div class="source-links">
+        <a href="https://www.maths.cam.ac.uk/postgrad/part-iii/files/pastpapers/2012/paper_73.pdf" target="_blank" rel="noreferrer">Burgers vortex mathematics ↗</a>
+        <a href="https://physics.weber.edu/schroeder/fluids/" target="_blank" rel="noreferrer">Lattice Boltzmann method ↗</a>
+        <a href="https://neuromechfly.org/" target="_blank" rel="noreferrer">NeuroMechFly project ↗</a>
+        <a href="assets/aero/licenses/NeuroMechFly-NOTICE.txt" target="_blank" rel="noreferrer">Model attribution &amp; license ↗</a>
+        <a data-github-link href="https://github.com/nurtileuss/vortex-flow-explorer" target="_blank" rel="noreferrer">VORTEX source code ↗</a>
+      </div>
+    </article></div>
+  </aside>
+  <div class="ns-swatches" aria-hidden="true"><span data-color="cold"></span><span data-color="mid"></span><span data-color="warm"></span><span data-color="text"></span><span data-color="bg"></span></div>
+  <aside class="side-panel film-panel" data-side-panel="film" id="film-dialog" aria-label="Flow films" hidden><div class="dialog-top"><span>VORTEX / MOTION STUDY</span><button type="button" data-close-panel aria-label="Close films">✕</button></div><button type="button" class="sound-button film-sound" data-sound-toggle aria-pressed="false" disabled>Sound</button><div class="film-tabs" aria-label="Choose a film"><button type="button" data-film="formation" aria-pressed="true">Formation <span>Blender study</span></button></div><video controls playsinline preload="none" poster="assets/vortex-formation-poster.jpg"><source src="assets/vortex-formation-web.mp4" type="video/mp4"></video><p class="film-caption">A cinematic reveal of the paths with a camera orbit. An artistic animation of the geometry.</p></aside>
+
+</div>
+</body>
+</html>
